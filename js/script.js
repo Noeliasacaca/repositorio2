@@ -1,11 +1,11 @@
 do{
-   pass= prompt( "introdusca su usuario, para iniciar sesión")
-}while (pass !="Maria36")
- 
-let savedPass = "amarillo";
+   usuario= prompt( "introdusca su usuario, para iniciar sesión")
+}while (usuario !="Maria36") 
+
+let contraseña = "amarillo";
 for (let i = 0; i < 5; i++) {
-    let userPass = prompt("Ingresá tu contraseña");
-    if (savedPass === userPass) {
+    let ingresar = prompt("Ingresá tu contraseña");
+    if (contraseña === ingresar) {
         alert("sesión iniciada con exito");
         break;
     }
