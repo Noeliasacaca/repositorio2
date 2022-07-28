@@ -13,7 +13,7 @@ function login() {
             alert("Nombre de usuria no encontrado, por favor intentelo nuevamente. Te quedan " + i + " intentos.")
         }
     }
-    
+
 let contraseña = "amarillo";
 
     for (let i = 2; i >= 0; i--) {
@@ -32,7 +32,6 @@ let contraseña = "amarillo";
 
     return ingresar;
 }
-
 
 if (login()) {
 
