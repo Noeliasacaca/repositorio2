@@ -1,4 +1,4 @@
-let usuario = "maria36";
+/* let usuario = "maria36";
 
 function login() {
     let ingresar = false;
@@ -55,5 +55,63 @@ if (login()) {
 }
 
 
-alert ("gracias por elegisnos")
-  
+alert ("gracias por elegisnos") */
+
+
+
+class ceramica {
+
+    constructor(producto, precio, stock,  id) {
+        this.producto = producto;
+        this.precio = parseInt(precio);
+        this.stock = stock;
+        this.id = id;
+    }
+
+    asignarId(array) {
+        this.id = array.length;
+    }
+
+}
+
+const ceramicas = [
+    new ceramica("taza con diseño de sandia", 1300, 'con stok', 1),
+    new ceramica("cenicero con diseño de corazón", 1000, 'con stok', 3),
+    new ceramica("tetera con forma de gatito", 2100, 'sin stok', 4),
+    new ceramica("sahumerio con forma de hoja", 1500, 'con stok', 5),
+    new ceramica("maceta con forma de frutilla", 1800, 'con stok', 6)
+]
+
+console.log(ceramicas);
+
+let categoria = prompt('Elegí lo que buscas:\n1 - productos (A a Z) \n2 - productos (Z a A) \n3 - precio');
+
+function ordenar(categoria, array) {
+    let arrayOrdenado = array.slice(0);
+
+
+    switch (categoria) {
+        case '1':
+            let deMenoraMayor = arrayOrdenado.sort((a,b)=>a.producto.localeCompare(b.producto));
+            return deMenoraMayor;
+        case '2':
+            let deMayoraMenor = arrayOrdenados.sort((a, b) => b.producto.localeCompare(a.producto));
+            return deMayoraMenor;
+        case '3':
+            return arrayOrdenado.sort((a, b) => b.precio - a.precio);
+        default:
+            alert('error');
+            break;
+    }
+}
+function buscador(array){
+    let info = '';
+
+    array.forEach(elemento=>{
+        info += 'producto: ' + elemento.producto + '\nprecio: ' + elemento.precio + '\nstock: ' + elemento.stock + ' puntos.\n\n'
+    })
+
+    return info;
+}
+
+alert(buscador(ordenar(categoria,ceramicas))); 
