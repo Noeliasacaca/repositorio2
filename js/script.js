@@ -1,102 +1,104 @@
-let usuario = "maria36";
+let nombreDeUsuario = document.getElementById('nombreDeUsuario');
+let nuevoNombre = prompt('Ingresá tu nombre, para inicias sesion');
+nombreUsuario.innerText=nuevoNombre;
+//--------------------------------------------cambia imagen-------------------------------------------
+const imgCeramica = document.getElementById('imagenOp');
 
 
-function login() {
-    let ingresar = false;
-    for (let i = 2; i >= 0; i--) {
-        let sesion = prompt("introdusca su usuario, para iniciar sesión ");
-        if (sesion === usuario) {
-            alert("HOLA Maria36 :)");
-            ingresar = true;
-            break;
-        } else {
-            alert("Nombre de usuria no encontrado, por favor intentelo nuevamente. Te quedan " + i + " intentos.")
-        }
-    }
+const ceniceros = [{
+    id: 1,
+    nombre: 'canicero',
+    color: 'gatito',
+    imagen: 'img/ceniceroyinyyang.jpg'
+}, {
+    id: 2,
+    nombre: 'canicero',
+    color: 'franjas',
+    imagen: 'img/ceniceroconfranjasrojas.jpg'
+}, {
+    id: 3,
+    nombre: 'canicero',
+    color: 'corazon',
+    imagen: 'img/ceniceroformadecorazon.jpg'
+}, {
+    id: 4,
+    nombre: 'canicero',
+    color: 'huevo',
+    imagen: 'img/ceniceroformadehuevo.jpg'
+}]
 
-    let contraseña = "amarillo";
 
-    for (let i = 2; i >= 0; i--) {
-        let ingresar = prompt("Ingresá tu contraseña ");
-        if (ingresar === contraseña) {
-            alert("sesión iniciada con exito")
-            alert("Gracias por elegir nuestra tienda <3")
-            alert("bienvenido/a :)");
-            ingresar = true;
-            break;
-        } else {
-            alert("Contraseña incorrecta, intentelo de nuevo. Te quedan " + i + "intentos.");
 
-        }
-    }
+let radios = document.querySelectorAll('input[type="radio"]')
+console.log(radios);
 
-    return ingresar;
+
+function imagenOp(elemento, source){
+    elemento.src = source;
 }
+radios.forEach(item => {
+    item.addEventListener('click', () => {
+        let ceniceroSelec = item.value;
+        let variante = ceniceros.find((cenicero) => cenicero.
+        ceni == ceniceroSelec);
+        imagenOp(imgCeramica, variante.imagen);
+    })
+})
 
-if (login()) {
+//------------------------------------------- catalogo-------------------------------------------------------------------
+let todoProducto = document.querySelector('.nuestrosProductos');
 
-    let productos = prompt("Elegí el en producto que desea comprar : \n1- Juego de tazas con figuras de fresas de $2.000 \n2 - Tetera de porcelada con forma de caracol  de $1.500 \n3 - Cenicero diseño de gatito de $1.000 \nPresioná X para finalizar.");
+let catalogo = [{
+    id: 1,
+    nombre: 'Cenicero con diseño de corazón',
+    codigo: '123',
+    precio: 1000,
+    imagen: 'img/ceniceroformadecorazon.jpg',
+    descripcion_corta: 'cenicero corazon',
+    descripcion: 'ceramicas artesanales'
+}, {
+    id: 2,
+    nombre: 'cenicero con forma de huevo',
+    codigo: '1223',
+    precio: 1200,
+    imagen: 'img/ceniceroformadehuevo.jpg',
+    descripcion_corta: 'cenicero huevo',
+    descripcion: 'ceramicas artesanales'
+},{id: 3,
+    nombre: 'MACETA CON DISEÑO DE FUTILLA',
+    codigo: '533212656',
+    precio: 2500,
+    imagen: 'img/macetasformadefrutilla.jpg',
+    descripcion_corta: 'maceta frutilla',
+    descripcion: 'ceramicas artesanales'
+},{id: 4,
+    nombre: 'SAHUMERIO CON FORMA DE HONGO',
+    codigo: '5324452656',
+    precio: 1250,
+    imagen: 'img/saumeriocnforadehongo.jpg',
+    descripcion_corta: 'sahumerio hongo',
+    descripcion: 'ceramicas artesanales'
+}];
 
-    while (productos != "X" && productos != "x") {
-        switch (productos) {
-            case '1':
-                alert("tu compra fue Juego de tazas con figuras de fresas de $2.000.")
-                break;
-            case '2':
-                alert("tu compra fue Tetera de porcelada con forma de caracol  de $1.500 .")
-                break;
-            case '3':
-                alert("tu compra fue Cenicero diseño de gatito de $1.000.")
-                break;
-        }
-        productos = prompt("Elegí el en producto que desea comprar : \n1- Juego de tazas con figuras de fresas de $2.000 \n2 - Tetera de porcelada con forma de caracol  de $1.500 \n3 - Cenicero diseño de gatito de $1.000 \nPresioná X para finalizar.");
+
+function tarjetaProductos(array, contenedor) {
+    contenedor.innerHTML = '';
+    for (const item of array) {
+        let tarjeta = document.createElement('div');
+        tarjeta.className = 'card my-5 bg-light';
+        tarjeta.id = `${item.id}`;
+        tarjeta.innerHTML = `
+        <h4 class="card-header">${item.nombre}</h4>
+        <img src="${item.imagen}" class="card-img-top imagenProducto" alt="${item.descripcion_corta}">
+        <div class="card-body">
+            <p class="card-text">${item.descripcion}</p>
+            <span id="precio">$ ${item.precio}</span>
+        </div>
+        <div class="card-footer"><a href="#" class="btn btn-primary">Comprar</a></div>`;
+        contenedor.append(tarjeta)
     }
 }
-
-alert("gracias por elegirnos")
-
-
-
-class ceramica {
-
-    constructor(producto, precio, stock) {
-        this.producto = producto;
-        this.precio = parseInt(precio);
-        this.stock = stock;
-    }
-
-    asignarproductos(array) {
-        this.producto = array.length;
-    }
-
+function buscar(array, buscador, input) {
+    return array.filter((item) => item[buscador].includes(input))
 }
-
-const ceramicas = [
-    new ceramica("taza con diseño de sandia", 1300, 'con stock'),
-    new ceramica("cenicero con diseño de corazón", 1000, 'con stock'),
-    new ceramica("tetera con forma de gatito", 2100, 'sin stok'),
-    new ceramica("porta sahumerio con forma de hoja", 1500, 'con stock'),
-    new ceramica("maceta con forma de frutilla", 1800, 'con stock'),
-    new ceramica("cenicero franjas Rojas", 1200, 'con stock'),
-    new ceramica("cenicero con forma de huevo", 1700, 'con stock'),
-    new ceramica("porta sahumerio con forma de hongo", 1600, 'con stock'),
-    new ceramica("tetera con forma de caracol", 2300, 'con stock'),
-    new ceramica("taza diseño con cuadros", 900, 'sin stock'),
-    new ceramica("tetera forma de pera", 2400, 'sin stock'),
-    new ceramica("velero Forma De Hongo", 1100, 'con stock'),
-    new ceramica("velero calavera", 1300, 'con stock')
-]
-
-console.log(ceramicas);
-
-
-let productoElegido = prompt('Escribí el nombre  del producto que buscas');
-
-const filtrado = ceramicas.filter((ceramica) => ceramica.producto.toLowerCase().includes(productoElegido.toLowerCase()))
-
-if (filtrado.length == 0) {
-    alert('Lo sentimos. No encontramos coincidencias en nuestro catálogo');
-} else {
-    const imprimible = filtrado.map((ceramica) => ceramica.producto);
-    alert('Los productos de nuestro catálogo, que coinciden parcial o totalmente con esta búsqueda, son:\n- ' + imprimible.join('\n- '));
-}
+tarjetaProductos(catalogo, todoProducto);
