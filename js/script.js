@@ -1,61 +1,71 @@
-let nombreDeUsuario = document.getElementById('nombreDeUsuario');
-let nuevoNombre = prompt('Ingresá tu nombre, para inicias sesion');
-nombreUsuario.innerText=nuevoNombre;
-//--------------------------------------------cambia imagen-------------------------------------------
-const imgCeramica = document.getElementById('imagenOp');
-
-
-const ceniceros = [{
-    id: 1,
-    nombre: 'canicero',
-    color: 'gatito',
-    imagen: 'img/ceniceroyinyyang.jpg'
-}, {
-    id: 2,
-    nombre: 'canicero',
-    color: 'franjas',
-    imagen: 'img/ceniceroconfranjasrojas.jpg'
-}, {
-    id: 3,
-    nombre: 'canicero',
-    color: 'corazon',
-    imagen: 'img/ceniceroformadecorazon.jpg'
-}, {
-    id: 4,
-    nombre: 'canicero',
-    color: 'huevo',
-    imagen: 'img/ceniceroformadehuevo.jpg'
+/*  ----------------------------usuarios registrados---------------------- */
+const usuarios = [{
+    nombre: 'Joel',
+    mail: 'joelnahu@gmail.com',
+    pass: 'castaño'
+},
+{
+    nombre: 'Dylan',
+    mail: 'dylanaxel@mail.com',
+    pass: 'verdeagua'
+},
+{
+    nombre: 'Miguelina',
+    mail: 'miguelinanina@mail.com',
+    pass: 'lila'
 }]
 
 
+/* --------------------------elementos-------------------------------- */
+const gmail = document.getElementById('gmail'),
+    contraseña = document.getElementById('contraseña'),
+    registro = document.getElementById('registro'),
+    botonIniciar = document.getElementById('login'),
+    modalEl = document.getElementById('modalLogin'),
+    modal = new bootstrap.Modal(modalEl),
+    imgCeramica = document.getElementById('imagenOp'),
+    todoProducto = document.querySelector('.nuestrosProductos'),
+    toggles = document.querySelectorAll('.toggles');
 
-let radios = document.querySelectorAll('input[type="radio"]')
-console.log(radios);
 
+function guardarDatos(usuarioDB, storage) {
+    const usuario = {
+        'name': usuarioDB.nombre,
+        'user': usuarioDB.mail,
+        'pass': usuarioDB.pass
+    }
 
-function imagenOp(elemento, source){
-    elemento.src = source;
+    storage.setItem('usuario', JSON.stringify(usuario));
+    }
+
+function borrarDatos() {
+    localStorage.clear();
+    sessionStorage.clear();
 }
-radios.forEach(item => {
-    item.addEventListener('click', () => {
-        let ceniceroSelec = item.value;
-        let variante = ceniceros.find((cenicero) => cenicero.
-        ceni == ceniceroSelec);
-        imagenOp(imgCeramica, variante.imagen);
-    })
-})
 
-//------------------------------------------- catalogo-------------------------------------------------------------------
-let todoProducto = document.querySelector('.nuestrosProductos');
+function recuperarUsuario(storage) {
+    let usuarioEnStorage = JSON.parse(storage.getItem('usuario'));
+    return usuarioEnStorage;
+}
 
-let catalogo = [{
+function saludar(usuario) {
+    nombreUsuario.innerHTML = `Bienvenido/a, <span>${usuario.name}</span>`
+}
+
+
+let nusuarioNombre = document.getElementById('usuarioNombre');
+let nuevoNombre = prompt('Ingresá tu nombre, para inicias sesion');
+usuarioNombre.innerText=nuevoNombre;
+
+
+/* ------------------------------todo los productos-------------------------------- */
+const catalogo = [{
     id: 1,
     nombre: 'Cenicero con diseño de corazón',
     codigo: '123',
     precio: 1000,
     imagen: 'img/ceniceroformadecorazon.jpg',
     descripcion_corta: 'cenicero corazon',
-    descripcion: 'ceramicas artesanales'
 }, {
     id: 2,
     nombre: 'cenicero con forma de huevo',
@@ -63,42 +73,105 @@ let catalogo = [{
     precio: 1200,
     imagen: 'img/ceniceroformadehuevo.jpg',
     descripcion_corta: 'cenicero huevo',
-    descripcion: 'ceramicas artesanales'
 },{id: 3,
     nombre: 'MACETA CON DISEÑO DE FUTILLA',
     codigo: '533212656',
     precio: 2500,
     imagen: 'img/macetasformadefrutilla.jpg',
     descripcion_corta: 'maceta frutilla',
-    descripcion: 'ceramicas artesanales'
 },{id: 4,
     nombre: 'SAHUMERIO CON FORMA DE HONGO',
     codigo: '5324452656',
     precio: 1250,
     imagen: 'img/saumeriocnforadehongo.jpg',
     descripcion_corta: 'sahumerio hongo',
-    descripcion: 'ceramicas artesanales'
+},{
+    id: 5,
+    nombre: 'cenicero con forma de gatito',
+    codigo: '948348',
+    precio: 1500,
+    imagen: 'img/cenicerogatito.jpg',
+    descripcion_corta: 'cenicero gatito',
+},
+{
+    id: 6,
+    nombre: 'cenicero con dideño del yin y yang',
+    codigo: '037292',
+    precio: 1200,
+    imagen: 'img/ceniceroyinyyang.jpg',
+    descripcion_corta: 'cenicero yinyyang',
+},
+{
+    id: 7,
+    nombre: 'cenicero con franajs rojas',
+    codigo: '93854',
+    precio: 1200,
+    imagen: 'img/ceniceroconfranjasrojas.jpg',
+    descripcion_corta: 'cenicero franjas rojas',
 }];
 
-
-function tarjetaProductos(array, contenedor) {
-    contenedor.innerHTML = '';
-    for (const item of array) {
-        let tarjeta = document.createElement('div');
-        tarjeta.className = 'card my-5 bg-light';
-        tarjeta.id = `${item.id}`;
-        tarjeta.innerHTML = `
-        <h4 class="card-header">${item.nombre}</h4>
-        <img src="${item.imagen}" class="card-img-top imagenProducto" alt="${item.descripcion_corta}">
+function todoLosProductos(array) {
+    todoProducto.innerHTML = '';
+    array.forEach(element =>{
+        let html = `<h4 class="card-header">${element.nombre}</h4>
+        <img src="${element.imagen}" class="card-img-top imagenProducto" alt="${element.descripcion_corta}">
         <div class="card-body">
-            <p class="card-text">${item.descripcion}</p>
-            <span id="precio">$ ${item.precio}</span>
+            <span id="precio">$ ${element.precio}</span>
         </div>
-        <div class="card-footer"><a href="#" class="btn btn-primary">Comprar</a></div>`;
-        contenedor.append(tarjeta)
+        <div class="card-footer"><a href="#" class="btn btn-primary">Comprar</a></div>>`;
+        todoProducto.innerHTML += html;
+    });
+}
+
+/* ------------------------------ fin de todo los productos-------------------------------- */
+
+function presentarInfo(array, clase) {
+    array.forEach(element => {
+        element.classList.toggle(clase);
+    });
+}
+
+function validarUsuario(usersDB, user, pass) {
+    let encontrado = usersDB.find((userDB) => userDB.mail == user);
+    if (typeof encontrado === 'undefined') {
+        return false; 
+    } else {
+    
+        if (encontrado.pass != pass) {
+            return false;
+        } else {
+            return encontrado;
+        }
     }
 }
-function buscar(array, buscador, input) {
-    return array.filter((item) => item[buscador].includes(input))
-}
-tarjetaProductos(catalogo, todoProducto);
+
+botonIniciar.addEventListener('click', (e) => {e.preventDefault();
+
+    if (!gmail.value || !contraseña.value) {
+        alert('Todos los campos son requeridos');
+    } else {
+        let data = validarUsuario(usuarios, gmail.value, contraseña.value);
+        if (!data) {
+            alert(`Usuario y/o contraseña erróneos`);
+        } else {
+            if (registro.checked) {
+                guardarDatos(data, localStorage);
+                saludar(recuperarUsuario(localStorage));
+            } else {
+                guardarDatos(data, sessionStorage);
+                saludar(recuperarUsuario(sessionStorage));
+            }
+            modal.hide();
+            todoLosProductos(catalogo);
+            presentarInfo(toggles, 'd-none');
+        }
+    }
+});
+
+btnLogout.addEventListener('click', () => {
+    borrarDatos();
+    presentarInfo(toggles, 'd-none');
+});
+
+estaLogueado(recuperarUsuario(localStorage));
+
