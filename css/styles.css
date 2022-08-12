@@ -70,6 +70,12 @@ h1 {
     background-color: #bcb4cd;
 }
 
+form{
+    text-align: center;
+    padding: 20px;
+    margin: 10px;
+}
+
 #elegirImagen{
     text-align: center;
     padding: 30px;
