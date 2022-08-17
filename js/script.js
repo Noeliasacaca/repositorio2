@@ -1,3 +1,21 @@
+Swal.fire(
+    {
+        title: 'Te damos la bienvenida a nuestra tienda KUMO ',
+        text: 'Por favor, ingrese su usuario para poder ver los productos',
+        confirmButtonText: 'Gracias',
+        position: 'top-center',
+        width: 700,
+        padding: '3em',
+        color: '#716add',
+        backdrop: `
+            rgba(0,0,123,0.4)
+            url("/img/colores.gif")
+            left top
+            no-repeat
+        `
+    }
+)
+
 /*  ----------------------------usuarios registrados---------------------- */
 const usuarios = [{
     nombre: 'Joel',
@@ -6,12 +24,12 @@ const usuarios = [{
 },
 {
     nombre: 'Dylan',
-    mail: 'dylanaxel@mail.com',
+    mail: 'dylanaxel@gmail.com',
     pass: 'verdeagua'
 },
 {
     nombre: 'Miguelina',
-    mail: 'miguelinanina@mail.com',
+    mail: 'miguelinanina@gmail.com',
     pass: 'lila'
 }]
 
@@ -55,7 +73,7 @@ function saludar(usuario) {
 
 let nusuarioNombre = document.getElementById('usuarioNombre');
 let nuevoNombre = prompt('Ingresá tu nombre, para inicias sesion');
-usuarioNombre.innerText=nuevoNombre;
+usuarioNombre.innerText=nuevoNombre; 
 
 
 /* ------------------------------todo los productos-------------------------------- */
@@ -121,9 +139,9 @@ function todoLosProductos(array) {
         <div class="card-footer"><a href="#" class="btn btn-primary">Comprar</a></div>>`;
         todoProducto.innerHTML += html;
     });
-}
+} 
 
-/* ------------------------------ fin de todo los productos-------------------------------- */
+/* /* ------------------------------ fin de todo los productos-------------------------------- */
 
 function presentarInfo(array, clase) {
     array.forEach(element => {
@@ -173,5 +191,4 @@ btnLogout.addEventListener('click', () => {
     presentarInfo(toggles, 'd-none');
 });
 
-estaLogueado(recuperarUsuario(localStorage));
-
+estaLogueado(recuperarUsuario(localStorage));  
