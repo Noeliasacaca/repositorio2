@@ -25,16 +25,16 @@ body {
 
 h1 {
     background: #9c94bd;
-    font-size: 2em; 
+    font-size: 2em;
     text-align: center;
     margin: 20px 0;
     padding: 20px 0;
     text-transform: uppercase;
 }
 
-.bienvenido{
+.bienvenido {
     background: #bf9adb;
-    font-size: 1.5em; 
+    font-size: 1.5em;
     text-align: center;
     margin: 20px 0;
     padding: 20px 0;
@@ -66,30 +66,33 @@ h1 {
     width: 100%;
 }
 
-.tienda{
+.tienda {
     background-color: #bcb4cd;
 }
 
-form{
+form {
     text-align: center;
     padding: 20px;
     margin: 10px;
 }
 
-#elegirImagen{
+#elegirImagen {
     text-align: center;
     padding: 30px;
     margin: 20px;
 }
-.busqueda{
+
+.busqueda {
     text-align: center;
     padding: 6px;
     margin: 10px;
 }
-.inputBusqueda{
+
+.inputBusqueda {
     padding: 20px;
-    margin: 20px;  
+    margin: 20px;
 }
+
 footer {
     background-color: #050309;
     color: #ecdde9;
@@ -97,7 +100,29 @@ footer {
     width: 100%;
     text-align: center;
 }
+
 .copy {
     padding: 10px;
     color: #ecdde9;
+}
+
+
+.anuncio {
+    width: 60%;
+    height: 350px;
+    background-color: #87B0D7;
+    background-size: cover;
+    border: 15px #87B0D7 solid;
+    display: block;
+}
+
+.carrito {
+    display: flex;
+    padding: 10px;
+    width: 100px;
+    height: 50px;
+    margin: auto;
+    color: #668299;
+    list-style: none;
+    font-size: 150%;
 }
