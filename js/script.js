@@ -191,4 +191,56 @@ btnLogout.addEventListener('click', () => {
     presentarInfo(toggles, 'd-none');
 });
 
-estaLogueado(recuperarUsuario(localStorage));  
+estaLogueado(recuperarUsuario(localStorage));
+
+
+
+/* agregando eventos */
+
+caja.onmouseover = () => {
+    caja.style.backgroundImage = 'url("img/anuncio1.jpg")';
+    console.log('Estados Unidos');
+}
+caja.onmouseout = () => {
+    caja.style.backgroundImage = 'url("img/anuncio2.png")';
+    console.log('Australia');
+}
+// elige imagen
+
+let radios = document.querySelectorAll('input[type="radio"]')
+console.log(radios);
+
+const botellas = [{
+    id: 1,
+    nombre: 'tetera forma de reloj',
+    color: 'reloj',
+    imagen: 'img/tetera reloj.jpg'
+}, {
+    id: 2,
+    nombre: 'tetera forma de pera',
+    color: 'pera',
+    imagen: 'img/teterapera.jpg'
+}, {
+    id: 1,
+    nombre: 'tetera forma tv',
+    color: 'tv',
+    imagen: 'img/teteratv.jpg'
+}, {
+    id: 1,
+    nombre: 'tetera forma de gatito',
+    color: 'gatito',
+    imagen: 'img/teteradegatito.jpg'
+}]
+
+function cambiarImagen(elemento, source) {
+    elemento.src = source
+}
+
+radios.forEach(item => {
+    item.addEventListener('click', () => {
+        let malo = item.value;
+        let variante = botellas.find((botella) => botella.color == malo);
+        cambiarImagen(fotoTeteras, variante.imagen);
+    })
+})
+
