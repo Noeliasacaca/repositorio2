@@ -42,8 +42,10 @@ const gmail = document.getElementById('gmail'),
     modalEl = document.getElementById('modalLogin'),
     modal = new bootstrap.Modal(modalEl),
     imgCeramica = document.getElementById('imagenOp'),
-    todoProducto = document.querySelector('.nuestrosProductos'),
-    toggles = document.querySelectorAll('.toggles');
+    toggles = document.querySelectorAll('.toggles'),
+    caja = document.querySelector('.anuncio'),
+    fotoTeteras = document.getElementById('imgTeteras');
+
 
 
 function guardarDatos(usuarioDB, storage) {
@@ -54,7 +56,7 @@ function guardarDatos(usuarioDB, storage) {
     }
 
     storage.setItem('usuario', JSON.stringify(usuario));
-    }
+}
 
 function borrarDatos() {
     localStorage.clear();
@@ -71,75 +73,9 @@ function saludar(usuario) {
 }
 
 
-let nusuarioNombre = document.getElementById('usuarioNombre');
+/* let nusuarioNombre = document.getElementById('usuarioNombre');
 let nuevoNombre = prompt('Ingresá tu nombre, para inicias sesion');
-usuarioNombre.innerText=nuevoNombre; 
-
-
-/* ------------------------------todo los productos-------------------------------- */
-const catalogo = [{
-    id: 1,
-    nombre: 'Cenicero con diseño de corazón',
-    codigo: '123',
-    precio: 1000,
-    imagen: 'img/ceniceroformadecorazon.jpg',
-    descripcion_corta: 'cenicero corazon',
-}, {
-    id: 2,
-    nombre: 'cenicero con forma de huevo',
-    codigo: '1223',
-    precio: 1200,
-    imagen: 'img/ceniceroformadehuevo.jpg',
-    descripcion_corta: 'cenicero huevo',
-},{id: 3,
-    nombre: 'MACETA CON DISEÑO DE FUTILLA',
-    codigo: '533212656',
-    precio: 2500,
-    imagen: 'img/macetasformadefrutilla.jpg',
-    descripcion_corta: 'maceta frutilla',
-},{id: 4,
-    nombre: 'SAHUMERIO CON FORMA DE HONGO',
-    codigo: '5324452656',
-    precio: 1250,
-    imagen: 'img/saumeriocnforadehongo.jpg',
-    descripcion_corta: 'sahumerio hongo',
-},{
-    id: 5,
-    nombre: 'cenicero con forma de gatito',
-    codigo: '948348',
-    precio: 1500,
-    imagen: 'img/cenicerogatito.jpg',
-    descripcion_corta: 'cenicero gatito',
-},
-{
-    id: 6,
-    nombre: 'cenicero con dideño del yin y yang',
-    codigo: '037292',
-    precio: 1200,
-    imagen: 'img/ceniceroyinyyang.jpg',
-    descripcion_corta: 'cenicero yinyyang',
-},
-{
-    id: 7,
-    nombre: 'cenicero con franajs rojas',
-    codigo: '93854',
-    precio: 1200,
-    imagen: 'img/ceniceroconfranjasrojas.jpg',
-    descripcion_corta: 'cenicero franjas rojas',
-}];
-
-function todoLosProductos(array) {
-    todoProducto.innerHTML = '';
-    array.forEach(element =>{
-        let html = `<h4 class="card-header">${element.nombre}</h4>
-        <img src="${element.imagen}" class="card-img-top imagenProducto" alt="${element.descripcion_corta}">
-        <div class="card-body">
-            <span id="precio">$ ${element.precio}</span>
-        </div>
-        <div class="card-footer"><a href="#" class="btn btn-primary">Comprar</a></div>>`;
-        todoProducto.innerHTML += html;
-    });
-} 
+usuarioNombre.innerText=nuevoNombre;  */
 
 /* /* ------------------------------ fin de todo los productos-------------------------------- */
 
@@ -152,9 +88,9 @@ function presentarInfo(array, clase) {
 function validarUsuario(usersDB, user, pass) {
     let encontrado = usersDB.find((userDB) => userDB.mail == user);
     if (typeof encontrado === 'undefined') {
-        return false; 
+        return false;
     } else {
-    
+
         if (encontrado.pass != pass) {
             return false;
         } else {
@@ -163,7 +99,8 @@ function validarUsuario(usersDB, user, pass) {
     }
 }
 
-botonIniciar.addEventListener('click', (e) => {e.preventDefault();
+botonIniciar.addEventListener('click', (e) => {
+    e.preventDefault();
 
     if (!gmail.value || !contraseña.value) {
         alert('Todos los campos son requeridos');
@@ -191,19 +128,16 @@ btnLogout.addEventListener('click', () => {
     presentarInfo(toggles, 'd-none');
 });
 
-estaLogueado(recuperarUsuario(localStorage));
-
-
 
 /* agregando eventos */
 
 caja.onmouseover = () => {
     caja.style.backgroundImage = 'url("img/anuncio1.jpg")';
-    console.log('Estados Unidos');
+    console.log('anuncio1');
 }
 caja.onmouseout = () => {
     caja.style.backgroundImage = 'url("img/anuncio2.png")';
-    console.log('Australia');
+    console.log('anuncio2');
 }
 // elige imagen
 
@@ -243,4 +177,81 @@ radios.forEach(item => {
         cambiarImagen(fotoTeteras, variante.imagen);
     })
 })
+
+//agregando fetch
+
+const contenedor = document.querySelector('#contenedorTarjetas');
+const container = document.querySelector('#cardContainer');
+const productooss = document.querySelector('#productoss');
+const buscar = document.querySelector('#buscar');
+
+
+function filtrarCategoriass(array) {
+    let categoriass = productooss.value;
+    if (!categoriass) {
+        return array;
+    } else {
+        return array.filter((item) => item.CategoriasDeProduc == categoriass);
+    }
+}
+
+function crearHTML(array) {
+    contenedor.innerHTML = '';
+    container.innerHTML = '';
+    array.forEach((productos) => {
+        const tarjeta = `
+            <div class="col">
+                <div class="card h-100">
+                    <img src="${productos.imagen}" class="card-img-top" alt="${productos.descripcion_corta}">
+                    <div class="card-body">
+                        <h5 class="card-title">${productos.descripcion_corta}</h5>
+                        <p class="card-text">Producto: ${productos.personaje}</p>
+                        <p class="card-text">Categoria: ${productos.CategoriasDeProduc}</p>
+                    </div>
+                </div>
+            </div>`;
+        contenedor.innerHTML += tarjeta;
+    })
+}
+function categoriaFilter(array) {
+    let categoria = productooss.value;
+    if (!categoria) {
+        return array;
+    } else {
+        return array.filter((e) => e.categoria == categoria);
+    }
+
+}
+
+function createHTML(array) {
+    contenedor.innerHTML = ''
+    container.innerHTML = ''
+    array.forEach((productos) => {
+        const card = `
+            <div class="col">
+                <div class="card h-100">
+                    <img src="${productos.image}" class="card-img-top" alt="${productos.productos}">
+                    <div class="card-body">
+                        <h5 class="card-title">${productos.producto}</h5>  
+                        <p class="card-text">$${productos.precio}</p>
+                        <p class="card-text">Categoria: ${productos.categoria}</p>
+                    </div>
+                </div>
+            </div>`
+        container.innerHTML += card
+    })
+}
+
+async function data() {
+    const response = await fetch('./js/data.json');
+    const data = await response.json();
+    console.log(data);
+    createHTML(categoriaFilter(data));
+}
+
+buscar.addEventListener('click', () => {
+    data();
+})
+
+
 
