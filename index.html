@@ -76,11 +76,27 @@
             </div>
         </section>
         <h1>Tienda online</h1>
-        <div class="contenedorTarjetas card-group">
+    
 
-            <div class="tienda">
-                <p class="saludo"></p>
-                <div class="nuestrosProductos card-group"></div>
+        
+                <header class="container-fluid"></header>
+                <div class="container-fluid">
+            
+                    <main class="container">
+                        <div class="seleccion">
+                            <select id="productoss">
+                                <option value="">Todo los productos</option>
+                                <option value="cenicero">Cenicero</option>
+                                <option value="sahumerio">sahumerio</option>
+                                <option value="maceta">maceta</option>
+                            </select>
+                            <button id="buscar">Buscar</button>
+                        </div>
+                        <div class="row row-cols-1 row-cols-md-3 g-4" id="contenedorTarjetas"></div>        
+                        <div class="row row-cols-1 row-cols-md-3 g-4" id="cardContainer"></div>
+                    </main>
+            
+                </div>
     </main>
 
 
