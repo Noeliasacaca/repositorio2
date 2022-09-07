@@ -1,53 +1,55 @@
-[
-    {
-        "id": "1",
-        "producto": "cenicero con diseño de corazón",
-        "categoria": "cenicero",
-        "precio": 1000,
-        "image": "img/ceniceroformadecorazon.jpg"
-    },
-    {
-        "id": "2",
-        "producto": "cenicero con forma de huevo",
-        "categoria": "cenicero",
-        "precio": 1200,
-        "image": "img/ceniceroformadehuevo.jpg"
-    },
-    {
-        "id": "3",
-        "producto": "maceta con diseño de frutilla",
-        "categoria": "maceta",
-        "precio": 2500,
-        "image": "img/macetasformadefrutilla.jpg"
-    },
-    {
-        "id": "4",
-        "producto": "cenicero con forma de gatito",
-        "categoria": "cenicero",
-        "precio": 1500,
-        "image": "img/cenicerogatito.jpg"
-    },
-    {
-        "id": "5",
-        "producto": "cenicero con franajs rojas",
-        "categoria": "cenicero",
-        "precio": 1500,
-        "image": "img/ceniceroconfranjasrojas.jpg"
-    },
-    {
-        "id": "6",
-        "producto": "sahumerio con forma de hongo",
-        "categoria": "sahumerio",
-        "precio": 2500,
-        "descripcion_corta":"",
-        "image": "img/saumeriocnforadehongo.jpg"
-    },
-    {
-        "id": "7",
-        "producto": "cenicero con dideño del yin y yang",
-        "categoria": "cenicero",
-        "precio": 2500,
-        "descripcion_corta":"cenicero yinyyang",
-        "image": "img/ceniceroyinyyang.jpg"
-    }
-]
+{
+    "status": "success",
+    "items": [{
+            "id": 1,
+            "title": "sahumerio con diseño de corazón",
+            "price": 1200,
+            "image": "img/ceniceroformadecorazon.jpg",
+            "category": "sahumerio"
+        },
+        {
+            "id": 2,
+            "title":"cenicero con forma de huevo",
+            "price": 1200,
+            "image": "img/ceniceroformadehuevo.jpg",
+            "category": "cenicero"
+        },
+        {
+            "id": 3,
+            "title": "maceta con diseño de frutilla",
+            "price": 2500,
+            "image": "img/macetasformadefrutilla.jpg",
+            "category": "maceta"
+        },
+        {
+            "id": 4,
+            "title": "cenicero con forma de gatito",
+            "price": 1500,
+            "image":  "img/cenicerogatito.jpg",
+            "category": "cenicero"
+        },
+        {
+            "id": 5,
+            "title": "cenicero con franajs rojas",
+            "price": 1500,
+            "image": "img/ceniceroconfranjasrojas.jpg",
+            "category": "cenicero"
+
+        },
+        {
+            "id": 6,
+            "title": "sahumerio con forma de hongo",
+            "price": 2500,
+            "image": "img/saumeriocnforadehongo.jpg",
+            "category": "sahumerio"
+
+        },
+        {
+            "id": 7,
+            "title": "cenicero con dideño del yin y yang",
+            "price": 60,
+            "image": "img/ceniceroyinyyang.jpg",
+            "category": "cenicero"
+        }
+    ]
+}
