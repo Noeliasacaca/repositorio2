@@ -1,22 +1,39 @@
-Swal.fire(
-    {
-        title: 'Te damos la bienvenida a nuestra tienda KUMO ',
-        text: 'Por favor, ingrese su usuario para poder ver los productos',
-        confirmButtonText: 'Gracias',
-        position: 'top-center',
-        width: 700,
-        padding: '3em',
-        color: '#716add',
-        backdrop: `
+//elementos DOM
+const gmail = document.getElementById('gmail'),
+contraseña = document.getElementById('contraseña'),
+registro = document.getElementById('registro'),
+botonIniciar = document.getElementById('login'),
+modalEl = document.getElementById('modalLogin'),
+modal = new bootstrap.Modal(modalEl),
+toggles = document.querySelectorAll('.toggles'),
+caja = document.querySelector('.anuncio'),
+productoDOM = document.querySelector(".productos__center"),
+carritoDOM = document.querySelector(".carrito"),
+carritoCenter = document.querySelector(".carrito__center"),
+openCarrito = document.querySelector(".carrito__icon"),
+closeCarrito = document.querySelector(".close__carrito"),
+overlay = document.querySelector(".carrito__overlay"),
+carritoTotal = document.querySelector(".carrito__total"),
+clearCarritoBtn = document.querySelector(".clear__carrito"),
+itemTotales = document.querySelector(".item__total"),
+detalles = document.getElementById('detalles')
+
+//agregando libreria
+Swal.fire({
+	title: 'Te damos la bienvenida a nuestra tienda KUMO ',
+    text: 'Por favor, ingrese su usuario para poder ver los productos',
+	width: 600,
+	padding: '3em',
+	color: '#716add',
+	backdrop: `
             rgba(0,0,123,0.4)
             url("/img/colores.gif")
             left top
             no-repeat
+            
         `
-    }
-)
-
-/*  ----------------------------usuarios registrados---------------------- */
+})
+//usuarios registrados
 const usuarios = [{
     nombre: 'Joel',
     mail: 'joelnahu@gmail.com',
@@ -32,59 +49,25 @@ const usuarios = [{
     mail: 'miguelinanina@gmail.com',
     pass: 'lila'
 }]
-
-
-/* --------------------------elementos-------------------------------- */
-const gmail = document.getElementById('gmail'),
-    contraseña = document.getElementById('contraseña'),
-    registro = document.getElementById('registro'),
-    botonIniciar = document.getElementById('login'),
-    modalEl = document.getElementById('modalLogin'),
-    modal = new bootstrap.Modal(modalEl),
-    imgCeramica = document.getElementById('imagenOp'),
-    toggles = document.querySelectorAll('.toggles'),
-    caja = document.querySelector('.anuncio'),
-    fotoTeteras = document.getElementById('imgTeteras');
-
-
-
 function guardarDatos(usuarioDB, storage) {
     const usuario = {
         'name': usuarioDB.nombre,
         'user': usuarioDB.mail,
         'pass': usuarioDB.pass
     }
-
     storage.setItem('usuario', JSON.stringify(usuario));
 }
-
 function borrarDatos() {
     localStorage.clear();
     sessionStorage.clear();
 }
-
 function recuperarUsuario(storage) {
     let usuarioEnStorage = JSON.parse(storage.getItem('usuario'));
     return usuarioEnStorage;
 }
-
 function saludar(usuario) {
     nombreUsuario.innerHTML = `Bienvenido/a, <span>${usuario.name}</span>`
 }
-
-
-/* let nusuarioNombre = document.getElementById('usuarioNombre');
-let nuevoNombre = prompt('Ingresá tu nombre, para inicias sesion');
-usuarioNombre.innerText=nuevoNombre;  */
-
-/* /* ------------------------------ fin de todo los productos-------------------------------- */
-
-function presentarInfo(array, clase) {
-    array.forEach(element => {
-        element.classList.toggle(clase);
-    });
-}
-
 function validarUsuario(usersDB, user, pass) {
     let encontrado = usersDB.find((userDB) => userDB.mail == user);
     if (typeof encontrado === 'undefined') {
@@ -98,7 +81,6 @@ function validarUsuario(usersDB, user, pass) {
         }
     }
 }
-
 botonIniciar.addEventListener('click', (e) => {
     e.preventDefault();
 
@@ -127,10 +109,251 @@ btnLogout.addEventListener('click', () => {
     borrarDatos();
     presentarInfo(toggles, 'd-none');
 });
+//inicio de carrito
+let carrito = [];
+let buttonDOM = [];
 
+class UI {
+	renderProductos(productos) {
+		let result = ""
+		productos.forEach((producto) => {
+			result += `
+			<div class="producto">
+			<div class="image__container">
+			<img src=${producto.image} alt="">
+		</div>
+        <div class="producto__footer">
+            <h1>${producto.title}</h1>
+            <div class="rating">
+            <span>
+            </div>
+            <div class="price">$${producto.price}</div>
+        </div>
+        <div class="bottom">
+            <div class="btn__group">
+            <button class="btn addToCart" data-id=${producto.id}>Añadir carrito</button>
+            <button class="btn">Comprar</button>
+            </div>
+        </div>
+        </div>
+				`
+		});
+		productoDOM.innerHTML = result
+	}
+	getButtons() {
+		const buttons = [...document.querySelectorAll(".addToCart")];
+		buttonDOM = buttons;
+		buttons.forEach((button) => {
+			const id = button.dataset.id;
+			const inCart = carrito.find(item => item.id === parseInt(id, 10));
+			if (inCart) {
+				button.innerHTML = "En el carrito";
+				button.disabled = true;
+			}
+			button.addEventListener("click", e => {
+				e.preventDefault();
+				e.target.innerHTML = "En el carrito";
+				e.target.disabled = true;
+				// GET productos al carrito
+				const carritoItem = { ...Storage.getProductos(id), cantidad: 1 }
+				//agregando el producto al carrito
+				carrito = [...carrito, carritoItem]
+				//Guardamos el carrito al localstorage
+				Storage.saveCart(carrito)
+				this.setItemValues(carrito)
+				this.addCarritoItem(carritoItem)
+			})
+		})
+	}
+
+	setItemValues(carrito) {
+		let tempTotal = 0;
+		let itemTotal = 0;
+		carrito.map(item => {
+			tempTotal += item.price * item.cantidad;
+			itemTotal += item.cantidad;
+		});
+		carritoTotal.innerText = parseFloat(tempTotal.toFixed(2));
+		itemTotales.innerText = itemTotal
+	}
+	addCarritoItem({ image, price, title, id }) {
+		const div = document.createElement("div")
+		div.classList.add("carrito__item")
+
+		div.innerHTML = `
+		<img src=${image} alt=${title}>
+		<div>
+			<h3>${title}</h3>
+			<p class="price">$${price}</p>
+		</div>
+		<div>
+			<span class="increase" data-id=${id}>
+				<i class="bx bxs-up-arrow"></i>
+			</span>
+			<p class="item__cantidad">1</p>
+			<span class="decrease" data-id=${id}>
+				<i class="bx bxs-down-arrow"></i>
+			</span>
+		</div>
+		<div>
+			<span class="remove__item" data-id=${id}>
+				<i class="bx bx-trash"></i>
+			</span>
+		</div>
+		`
+		carritoCenter.appendChild(div)
+	}
+	show() {
+		carritoDOM.classList.add("show")
+		overlay.classList.add("show")
+	}
+	hide() {
+		carritoDOM.classList.remove("show")
+		overlay.classList.remove("show")
+	}
+	setAPP() {
+		carrito = Storage.getCart()
+		this.setItemValues(carrito)
+		this.populate(carrito)
+		openCarrito.addEventListener("click", this.show)
+		closeCarrito.addEventListener("click", this.hide)
+	}
+	populate(carrito) {
+		carrito.forEach(item => this.addCarritoItem(item))
+	}
+	cartLogic() {
+		clearCarritoBtn.addEventListener("click", () => {
+			this.clearCarrito()
+			this.hide()
+		});
+
+		carritoCenter.addEventListener("click", e => {
+			const target = e.target.closest("span")
+			const targetElement = target.classList.contains("remove__item");
+			console.log(target)
+			console.log(targetElement)
+			if (!target) return
+			if (targetElement) {
+				const id = parseInt(target.dataset.id);
+				this.removeItem(id)
+				carritoCenter.removeChild(target.parentElement.parentElement)
+			} else if (target.classList.contains("increase")) {
+				const id = parseInt(target.dataset.id, 10);
+				let tempItem = carrito.find(item => item.id === id);
+				tempItem.cantidad++;
+				Storage.saveCart(carrito)
+				this.setItemValues(carrito)
+				target.nextElementSibling.innerText = tempItem.cantidad
+			} else if (target.classList.contains("decrease")) {
+				const id = parseInt(target.dataset.id, 10);
+				let tempItem = carrito.find(item => item.id === id);
+				tempItem.cantidad--;
+
+				if (tempItem.cantidad > 0) {
+					Storage.saveCart(carrito);
+					this.setItemValues(carrito);
+					target.previousElementSibling.innerText = tempItem.cantidad;
+				} else {
+					this.removeItem(id);
+					carritoCenter.removeChild(target.parentElement.parentElement)
+				}
+			}
+		});
+	}
+	clearCarrito() {
+		const cartItems = carrito.map(item => item.id)
+		cartItems.forEach(id => this.removeItem(id))
+
+		while (carritoCenter.children.length > 0) {
+			carritoCenter.removeChild(carritoCenter.children[0])
+		}
+	}
+	removeItem(id) {
+		carrito = carrito.filter(item => item.id !== id);
+		this.setItemValues(carrito)
+		Storage.saveCart(carrito)
+		let button = this.singleButton(id);
+		if (button) {
+			button.disabled = false;
+			button.innerText = "Añadir carrito"
+		}
+	}
+	singleButton(id) {
+		return buttonDOM.find(button => parseInt(button.dataset.id) === id)
+	}
+}
+//fin de carrito
+
+class Storage {
+	static saveProduct(obj) {
+		localStorage.setItem("productos", JSON.stringify(obj))
+	}
+	static saveCart(carrito) {
+		localStorage.setItem("carrito", JSON.stringify(carrito))
+	}
+	static getProductos(id) {
+		const producto = JSON.parse(localStorage.getItem("productos"))
+		return producto.find(product => product.id === parseFloat(id, 10))
+	}
+	static getCart() {
+		return localStorage.getItem("carrito") ? JSON.parse(localStorage.getItem("carrito")) : [];
+	}
+}
+
+//agregando fetch
+class Productos {
+	async getProductos() {
+		try {
+			const result = await fetch("./js/data.json")
+			const data = await result.json()
+			const productos = data.items
+			return productos
+		} catch (err) {
+			console.log(err)
+		}
+	}
+}
+let category = "";
+let productos = [];
+function categoryValue() {
+	const ui = new UI();
+
+	category = document.getElementById("category").value
+	if (category.length > 0) {
+		const producto = productos.filter(mas => mas.category === category)
+		ui.renderProductos(producto)
+		ui.getButtons();
+	} else {
+		ui.renderProductos(productos)
+		ui.getButtons();
+
+	}
+}
+
+const query = new URLSearchParams(window.location.search)
+let id = query.get('id')
+
+document.addEventListener("DOMContentLoaded", async () => {
+	const productosLista = new Productos();
+	const ui = new UI();
+
+	ui.setAPP()
+
+	productos = await productosLista.getProductos()
+	if (id) {
+		ui.detalleProducto(id)
+		Storage.saveProduct(productos)
+		ui.getButtons();
+		ui.cartLogic();
+	} else {
+		ui.renderProductos(productos)
+		Storage.saveProduct(productos)
+		ui.getButtons();
+		ui.cartLogic();
+	}
+})
 
 /* agregando eventos */
-
 caja.onmouseover = () => {
     caja.style.backgroundImage = 'url("img/anuncio1.jpg")';
     console.log('anuncio1');
@@ -139,119 +362,3 @@ caja.onmouseout = () => {
     caja.style.backgroundImage = 'url("img/anuncio2.png")';
     console.log('anuncio2');
 }
-// elige imagen
-
-let radios = document.querySelectorAll('input[type="radio"]')
-console.log(radios);
-
-const botellas = [{
-    id: 1,
-    nombre: 'tetera forma de reloj',
-    color: 'reloj',
-    imagen: 'img/tetera reloj.jpg'
-}, {
-    id: 2,
-    nombre: 'tetera forma de pera',
-    color: 'pera',
-    imagen: 'img/teterapera.jpg'
-}, {
-    id: 1,
-    nombre: 'tetera forma tv',
-    color: 'tv',
-    imagen: 'img/teteratv.jpg'
-}, {
-    id: 1,
-    nombre: 'tetera forma de gatito',
-    color: 'gatito',
-    imagen: 'img/teteradegatito.jpg'
-}]
-
-function cambiarImagen(elemento, source) {
-    elemento.src = source
-}
-
-radios.forEach(item => {
-    item.addEventListener('click', () => {
-        let malo = item.value;
-        let variante = botellas.find((botella) => botella.color == malo);
-        cambiarImagen(fotoTeteras, variante.imagen);
-    })
-})
-
-//agregando fetch
-
-const contenedor = document.querySelector('#contenedorTarjetas');
-const container = document.querySelector('#cardContainer');
-const productooss = document.querySelector('#productoss');
-const buscar = document.querySelector('#buscar');
-
-
-function filtrarCategoriass(array) {
-    let categoriass = productooss.value;
-    if (!categoriass) {
-        return array;
-    } else {
-        return array.filter((item) => item.CategoriasDeProduc == categoriass);
-    }
-}
-
-function crearHTML(array) {
-    contenedor.innerHTML = '';
-    container.innerHTML = '';
-    array.forEach((productos) => {
-        const tarjeta = `
-            <div class="col">
-                <div class="card h-100">
-                    <img src="${productos.imagen}" class="card-img-top" alt="${productos.descripcion_corta}">
-                    <div class="card-body">
-                        <h5 class="card-title">${productos.descripcion_corta}</h5>
-                        <p class="card-text">Producto: ${productos.personaje}</p>
-                        <p class="card-text">Categoria: ${productos.CategoriasDeProduc}</p>
-                    </div>
-                </div>
-            </div>`;
-        contenedor.innerHTML += tarjeta;
-    })
-}
-function categoriaFilter(array) {
-    let categoria = productooss.value;
-    if (!categoria) {
-        return array;
-    } else {
-        return array.filter((e) => e.categoria == categoria);
-    }
-
-}
-
-function createHTML(array) {
-    contenedor.innerHTML = ''
-    container.innerHTML = ''
-    array.forEach((productos) => {
-        const card = `
-            <div class="col">
-                <div class="card h-100">
-                    <img src="${productos.image}" class="card-img-top" alt="${productos.productos}">
-                    <div class="card-body">
-                        <h5 class="card-title">${productos.producto}</h5>  
-                        <p class="card-text">$${productos.precio}</p>
-                        <p class="card-text">Categoria: ${productos.categoria}</p>
-                    </div>
-                </div>
-            </div>`
-        container.innerHTML += card
-    })
-}
-
-async function data() {
-    const response = await fetch('./js/data.json');
-    const data = await response.json();
-    console.log(data);
-    createHTML(categoriaFilter(data));
-}
-
-buscar.addEventListener('click', () => {
-    data();
-})
-
-
-
